@@ -5,7 +5,7 @@ import TodoTextInput from './TodoTextInput'
 import { Todo } from '../constants/TodoFilters'
 
 type Props = {
-  todo: Todo,
+  todo: (Todo & { id: number }),
   editTodo: (id: number, txt: string, complete: boolean) => void,
   deleteTodo: (id: number) => void,
   completeTodo: (id: number) => void

@@ -4,7 +4,6 @@ export const SHOW_ACTIVE = 'show_active'
 
 
 export type Todo = {
-	id: number,
 	complete: boolean,
 	title: string
 }

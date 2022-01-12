@@ -13,7 +13,7 @@ const TodoList = ({ filteredTodos, actions }: TodoListProps) => (
 )
 
 type TodoListProps = {
-  filteredTodos: Todo[],
+  filteredTodos: (Todo & { id: number })[],
   actions: Actions
 }
 

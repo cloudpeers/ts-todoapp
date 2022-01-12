@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import App from './components/App'
 import 'todomvc-app-css/index.css'
 
-import pkg from 'tlfs'
+import pkg, { Doc } from 'tlfs'
 import { Todo } from './constants/TodoFilters'
 import { Filter } from './components/Footer'
 import { Actions } from './constants/ActionTypes'
@@ -33,11 +33,11 @@ export type TodoState = {
 	title: string,
 	tasks: Todo[]
 }
-const state: TodoState = { title: "Empty", tasks: [] }
+let state: TodoState = { title: "Empty", tasks: [] }
 let filter: Filter = Filter.All
 const actions: Actions = {
 	addTodo: (title: string) => {
-		state.tasks.push({ complete: false, title, id: state.tasks.length })
+		state.tasks.push({ complete: false, title, })
 		draw()
 	},
 	clearCompleted: () => {
@@ -58,7 +58,7 @@ const actions: Actions = {
 	}
 	,
 	editTodo: (idx: number, title: string, complete: boolean) => {
-		state.tasks[idx] = { id: idx, complete, title }
+		state.tasks[idx] = { complete, title }
 		draw()
 	},
 	setVisibilityFilter: (_filter: Filter) => {
@@ -76,7 +76,10 @@ const draw = () => {
 const start = async () => {
 	const tlfs = await pkg.create(lenses)
 	console.log("Peer ID:", tlfs.sdk.getPeerId())
+	const doc: Doc = await tlfs.sdk.createDoc("todoapp")
+	state = tlfs.proxy(doc)
 	let w = window as any
+	w.state = state
 	w.tlfs = tlfs
 
 	draw()

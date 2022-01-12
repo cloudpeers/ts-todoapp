@@ -33,7 +33,7 @@ const MainSection = ({ todosCount, completedCount, actions, todos, filter }: Mai
   </section>
 )
 type MainSectionProps = {
-  todos: Todo[],
+  todos: (Todo & { id: number })[],
   todosCount: number,
   completedCount: number,
   actions: Actions,
