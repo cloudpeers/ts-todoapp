@@ -18,10 +18,9 @@ const Header = ({ addTodo }: Props) => (
       }}
       placeholder="What needs to be done?"
       editing={true}
-      text=''
+      text=""
     />
   </header>
 )
-
 
 export default Header

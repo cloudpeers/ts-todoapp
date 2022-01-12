@@ -11,15 +11,21 @@ export enum Filter {
 }
 
 type Props = {
-  activeCount: number,
-  completedCount: number,
+  activeCount: number
+  completedCount: number
   onClearCompleted: () => void
   setFilter: (filter: Filter) => void
   activeFilter: Filter
 }
 
 const Footer = (props: Props) => {
-  const { activeCount, completedCount, onClearCompleted, setFilter, activeFilter } = props
+  const {
+    activeCount,
+    completedCount,
+    onClearCompleted,
+    setFilter,
+    activeFilter
+  } = props
   const itemWord = activeCount === 1 ? 'item' : 'items'
   return (
     <footer className="footer">
@@ -27,22 +33,22 @@ const Footer = (props: Props) => {
         <strong>{activeCount || 'No'}</strong> {itemWord} left
       </span>
       <ul className="filters">
-        {(Object.keys(Filter) as Array<keyof typeof Filter>).map(filter =>
+        {(Object.keys(Filter) as Array<keyof typeof Filter>).map((filter) => (
           <li key={filter}>
-            <Link setFilter={() => setFilter(filter as Filter)} active={filter === activeFilter}>
+            <Link
+              setFilter={() => setFilter(filter as Filter)}
+              active={filter === activeFilter}
+            >
               <>{filter}</>
             </Link>
           </li>
-        )}
+        ))}
       </ul>
-      {
-        !!completedCount &&
-        <button
-          className="clear-completed"
-          onClick={onClearCompleted}
-        >Clear completed</button>
-
-      }
+      {!!completedCount && (
+        <button className="clear-completed" onClick={onClearCompleted}>
+          Clear completed
+        </button>
+      )}
     </footer>
   )
 }
@@ -50,7 +56,7 @@ const Footer = (props: Props) => {
 Footer.propTypes = {
   completedCount: PropTypes.number.isRequired,
   activeCount: PropTypes.number.isRequired,
-  onClearCompleted: PropTypes.func.isRequired,
+  onClearCompleted: PropTypes.func.isRequired
 }
 
 export default Footer

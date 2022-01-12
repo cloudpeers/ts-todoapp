@@ -6,14 +6,14 @@ import { Actions } from '../constants/ActionTypes'
 
 const TodoList = ({ filteredTodos, actions }: TodoListProps) => (
   <ul className="todo-list">
-    {filteredTodos.map(todo =>
+    {filteredTodos.map((todo) => (
       <TodoItem key={todo.id} todo={todo} {...actions} />
-    )}
+    ))}
   </ul>
 )
 
 type TodoListProps = {
-  filteredTodos: (Todo & { id: number })[],
+  filteredTodos: (Todo & { id: number })[]
   actions: Actions
 }
 

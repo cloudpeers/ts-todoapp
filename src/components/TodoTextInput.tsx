@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 type Props = {
-  onSave: (txt: string) => void,
-  text: string,
+  onSave: (txt: string) => void
+  text: string
   placeholder?: string
   editing: boolean
   newTodo?: boolean
@@ -15,8 +15,6 @@ type State = {
 }
 
 export default class TodoTextInput extends Component<Props, State> {
-
-
   state = {
     text: this.props.text || ''
   }
@@ -43,8 +41,8 @@ export default class TodoTextInput extends Component<Props, State> {
 
   render() {
     return (
-      <input className={
-        classnames({
+      <input
+        className={classnames({
           edit: this.props.editing,
           'new-todo': this.props.newTodo
         })}
@@ -54,7 +52,8 @@ export default class TodoTextInput extends Component<Props, State> {
         value={this.state.text}
         onBlur={this.handleBlur}
         onChange={this.handleChange}
-        onKeyDown={this.handleSubmit} />
+        onKeyDown={this.handleSubmit}
+      />
     )
   }
 }

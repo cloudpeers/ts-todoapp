@@ -4,11 +4,15 @@ import TodoList from './TodoList'
 import { Actions } from '../constants/ActionTypes'
 import { Todo } from '../constants/TodoFilters'
 
-const MainSection = ({ todosCount, completedCount, actions, todos, filter }: MainSectionProps) =>
-(
+const MainSection = ({
+  todosCount,
+  completedCount,
+  actions,
+  todos,
+  filter
+}: MainSectionProps) => (
   <section className="main">
-    {
-      !!todosCount &&
+    {!!todosCount && (
       <span>
         <input
           className="toggle-all"
@@ -18,10 +22,9 @@ const MainSection = ({ todosCount, completedCount, actions, todos, filter }: Mai
         />
         <label onClick={actions.completeAllTodos} />
       </span>
-    }
+    )}
     <TodoList actions={actions} filteredTodos={todos} />
-    {
-      !!todosCount &&
+    {!!todosCount && (
       <Footer
         completedCount={completedCount}
         activeCount={todosCount - completedCount}
@@ -29,16 +32,15 @@ const MainSection = ({ todosCount, completedCount, actions, todos, filter }: Mai
         setFilter={actions.setVisibilityFilter}
         activeFilter={filter}
       />
-    }
+    )}
   </section>
 )
 type MainSectionProps = {
-  todos: (Todo & { id: number })[],
-  todosCount: number,
-  completedCount: number,
-  actions: Actions,
+  todos: (Todo & { id: number })[]
+  todosCount: number
+  completedCount: number
+  actions: Actions
   filter: Filter
 }
 
-
-export default MainSection;
+export default MainSection

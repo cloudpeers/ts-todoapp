@@ -5,15 +5,13 @@ import TodoTextInput from './TodoTextInput'
 import { Todo } from '../constants/TodoFilters'
 
 type Props = {
-  todo: (Todo & { id: number }),
-  editTodo: (id: number, txt: string, complete: boolean) => void,
-  deleteTodo: (id: number) => void,
+  todo: Todo & { id: number }
+  editTodo: (id: number, txt: string, complete: boolean) => void
+  deleteTodo: (id: number) => void
   completeTodo: (id: number) => void
 }
 type State = { editing: boolean }
 export default class TodoItem extends Component<Props, State> {
-
-
   state = {
     editing: false
   }
@@ -37,7 +35,8 @@ export default class TodoItem extends Component<Props, State> {
     let element
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.title}
+        <TodoTextInput
+          text={todo.title}
           editing={this.state.editing}
           onSave={(text) => this.handleSave(todo.id, text)}
         />
@@ -45,24 +44,25 @@ export default class TodoItem extends Component<Props, State> {
     } else {
       element = (
         <div className="view">
-          <input className="toggle"
+          <input
+            className="toggle"
             type="checkbox"
             checked={todo.complete}
-            onChange={() => completeTodo(todo.id)} />
-          <label onDoubleClick={this.handleDoubleClick}>
-            {todo.title}
-          </label>
-          <button className="destroy"
-            onClick={() => deleteTodo(todo.id)} />
+            onChange={() => completeTodo(todo.id)}
+          />
+          <label onDoubleClick={this.handleDoubleClick}>{todo.title}</label>
+          <button className="destroy" onClick={() => deleteTodo(todo.id)} />
         </div>
       )
     }
 
     return (
-      <li className={classnames({
-        completed: todo.complete,
-        editing: this.state.editing
-      })}>
+      <li
+        className={classnames({
+          completed: todo.complete,
+          editing: this.state.editing
+        })}
+      >
         {element}
       </li>
     )

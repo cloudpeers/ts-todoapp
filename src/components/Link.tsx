@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 type Props = {
-  active: boolean, children: React.ReactChild, setFilter: () => void
+  active: boolean
+  children: React.ReactChild
+  setFilter: () => void
 }
 
-const Link = ({ active, children, setFilter }: Props) =>
-(
+const Link = ({ active, children, setFilter }: Props) => (
   // eslint-disable jsx-a11y/anchor-is-valid
   <a
     className={classnames({ selected: active })}
@@ -17,7 +18,5 @@ const Link = ({ active, children, setFilter }: Props) =>
     {children}
   </a>
 )
-
-
 
 export default Link
