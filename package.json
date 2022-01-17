@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/index.tsx --bundle --outfile=dist/index.js",
+    "build": "esbuild src/index.tsx --bundle --outfile=dist/index.js && cp index.html dist/",
     "watch": "npm run build -- --watch",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
     "lint:fix": "npm run lint -- --fix"
