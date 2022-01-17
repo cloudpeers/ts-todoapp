@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+name: tlfs-react-todo-demo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v2
+
+    - name: npm install
+      run: npm i
+
+    - name: npm run build
+      run: npm run build
