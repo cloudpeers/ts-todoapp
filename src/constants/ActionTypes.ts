@@ -20,4 +20,6 @@ export type Actions = {
   addDoc: (doc: DocId, schema: Schema) => void
   createDoc: () => void
   setDoc: (id: DocId) => void
+  share: (id: DocId, peer: PeerId) => void
+  clearInvitation: (id: DocId) => void
 }

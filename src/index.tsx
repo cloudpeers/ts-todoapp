@@ -12,12 +12,12 @@ import LocalFirst from 'tlfs'
 /**
  * todoapp {
     0.1.0 {
-	.: Struct
-	.title: MVReg<String>
-	.tasks: Array
-	.tasks.[]: Struct
-	.tasks.[].title: MVReg<String>
-	.tasks.[].complete: EWFlag
+  .: Struct
+  .title: MVReg<String>
+  .tasks: Array
+  .tasks.[]: Struct
+  .tasks.[].title: MVReg<String>
+  .tasks.[].complete: EWFlag
     }
 }
 cargo run --target x86_64-unknown-linux-gnu -- --input ../api/dart/test/todoapp.tlfs --output /dev/stdout | base64 -w0
@@ -84,6 +84,16 @@ const actions: Actions = {
     selectedDoc = id
     state = tlfs.proxy(docs.find((d) => d.id() === id)!)
     draw()
+  },
+  share: (id: DocId, peer: PeerId) => {
+    const doc = docs.find((d) => d.id() === id)!
+    const causal = doc.createCursor().sayCan(peer, 3) // Own
+    doc.applyCausal(causal)
+    doc.invitePeer(peer)
+  },
+  clearInvitation: (id: DocId) => {
+    pendingInvitations = pendingInvitations.filter((d) => d[0] !== id)
+    draw()
   }
 }
 const draw = () => {
@@ -94,6 +104,8 @@ const draw = () => {
       filter={filter}
       pendingInvitations={pendingInvitations}
       docs={docs}
+      selectedDoc={selectedDoc}
+      connectedPeers={Array.from(connectedPeers)}
     />,
     document.getElementById('root')
   )
@@ -102,18 +114,41 @@ const schema = 'todoapp'
 let tlfs: LocalFirst
 const docs: Doc[] = []
 let selectedDoc: DocId
-const pendingInvitations: [DocId, Schema][] = []
+let pendingInvitations: [DocId, Schema][] = []
+let connectedPeers: Set<PeerId> = new Set()
 const start = async () => {
-  tlfs = await pkg.create(lenses)
+  tlfs = await pkg.create('tlfs_react_demo-0.1.0', lenses)
   console.log('Peer ID:', tlfs.sdk.getPeerId())
-  const x: ReadableStreamDefaultReader<number> = tlfs.sdk
+  const invites: ReadableStreamDefaultReader<number> = tlfs.sdk
     .subscribeInvites()
     .getReader()
-  x.read().then(async function wakeup(): Promise<void> {
+  invites.read().then(async function wakeup(): Promise<void> {
     const yy: [DocId, Schema][] = Array.from(await tlfs.sdk.invites())
+    console.log('new invites', yy)
     pendingInvitations.push(...yy)
-    return x.read().then(wakeup)
+    return invites.read().then(wakeup)
   })
+
+  for (const a in await tlfs.sdk.addresses()) {
+    console.log('Listening on', a)
+  }
+  setInterval(async () => {
+    for (const a in await tlfs.sdk.addresses()) {
+      console.log('Listening on', a)
+    }
+  }, 30000)
+  setInterval(async () => {
+    const peers = Array.from(await tlfs.sdk.connectedPeers())
+    const newPeers = peers.filter((x) => !connectedPeers.has(x))
+    // TODO: snackbar
+    newPeers.forEach((p) => console.log('New connection to', p))
+    const disconnectedPeers = [...connectedPeers].filter(
+      (x) => !peers.includes(x)
+    )
+    disconnectedPeers.forEach((p) => console.log('Lost connection to', p))
+    connectedPeers = new Set(peers)
+    draw()
+  }, 5000)
 
   const doc: Doc = await tlfs.sdk.createDoc(schema)
   docs.push(doc)
