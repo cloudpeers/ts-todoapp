@@ -13,7 +13,7 @@ npx --yes http-server .
 ```
 
 ## Try it
-Current master is deployed to:
+Current master is deployed to: [https://cloudpeers.github.io/ts-todoapp/]().
 
 --------
 
